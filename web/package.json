@@ -1,0 +1,33 @@
+{
+  "name": "@ramithuh/plip-web",
+  "version": "0.1.0",
+  "description": "Browser-compatible interaction detection core derived from PLIP",
+  "type": "module",
+  "license": "GPL-2.0-only",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.txt"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "parity:generate": "python3 parity/generate_reference.py",
+    "parity:check": "npm run parity:generate && git diff --exit-code -- tests/fixtures/python-plip-prepared.json",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "check": "npm run build && npm test"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^3.2.4",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}

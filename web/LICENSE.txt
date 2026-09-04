@@ -1,0 +1,3 @@
+This browser port is distributed under the GNU General Public License version 2,
+the same license as the parent PLIP project. See ../LICENSE.txt for the complete
+license text.
