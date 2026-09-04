@@ -33,12 +33,26 @@ unit suite. This includes strict cutoffs, hydrophobic-patch reduction,
 salt-bridge suppression of duplicate H-bonds, ring-contact suppression during
 pi stacking, histidine cation-pi suppression, and water-bridge multiplicity.
 
-## Gate B — raw PDB/mmCIF fingerprint
+## Gate B — raw PDB/mmCIF fingerprint (in progress)
 
-This gate is not passed yet. It requires a browser chemistry adapter that
-matches the Open Babel preparation used by PLIP for ligand extraction,
-connectivity, aromaticity, donor/acceptor assignment, charges, protonation, and
-metal targets.
+`prepareRdkitSite()` is the first browser chemistry adapter. It derives
+topology-dependent features from sanitized RDKit.js molecules and uses the
+caller's original structure atom identities and coordinates. PDB/mmCIF parsing,
+component selection, bond-order assignment, and the ordered mapping into RDKit
+remain outside this package.
+
+The first raw acceptance case is checked in as
+`tests/fixtures/python-plip-raw-4dst.json`. It uses PLIP's protonated 4DST test
+structure, focal ligand `9LI:A:201`, and Python PLIP 3.0.1 with `--nohydro`.
+The browser path exactly reproduces six events spanning hydrophobic contacts,
+a protein-donor hydrogen bond, a protein-cation/pi contact, and a water bridge,
+including residue identities, direction, participating atom IDs, and water ID.
+The test also rejects an atom-identity array whose element order differs from
+the RDKit molecule.
+
+This is evidence for those rules on that structure, not completion of Gate B.
+Raw positive and negative cases for every family—and a much broader corpus—are
+still required before claiming general end-to-end parity.
 
 Before Weaver labels a result as PLIP, a deterministic raw-structure corpus
 must be run through both Python PLIP and the browser adapter. Event comparison
@@ -63,5 +77,5 @@ than silently replacing it with a different classifier.
 The raw gate should include positive and negative examples for every family,
 multi-ligand and metal-containing systems, alternate locations, waters,
 covalent ligands, nucleotides, and deliberately missing hydrogens. Until this
-gate passes, the package compatibility metadata reports the chemistry backend
-as caller-supplied.
+gate passes, compatibility metadata describes the RDKit adapter as experimental
+and fixture-bounded.

@@ -1,0 +1,19 @@
+{
+  "oracle": {
+    "name": "Python PLIP",
+    "version": "3.0.1",
+    "target_commit": "2f4911d",
+    "command": "plip -f 4dst_protonated.pdb -x --nohydro",
+    "input": "plip/test/pdb/4dst_protonated.pdb",
+    "input_sha256": "c2d4144c69edd8d60f483824d0196815277c259f217acf1840340561f7588299",
+    "site": "9LI:A:201"
+  },
+  "events": [
+    { "family": "Hydrophobic", "protein": "LEU:A:56", "ligand": "9LI:A:201", "direction": "", "proteinAtoms": [451], "ligandAtoms": [1441] },
+    { "family": "Hydrophobic", "protein": "LEU:A:56", "ligand": "9LI:A:201", "direction": "", "proteinAtoms": [448], "ligandAtoms": [1443] },
+    { "family": "Hydrophobic", "protein": "LEU:A:56", "ligand": "9LI:A:201", "direction": "", "proteinAtoms": [450], "ligandAtoms": [1438] },
+    { "family": "HydrogenBond", "protein": "SER:A:39", "ligand": "9LI:A:201", "direction": "protein-donor", "proteinAtoms": [314], "ligandAtoms": [1447] },
+    { "family": "CationPi", "protein": "LYS:A:5", "ligand": "9LI:A:201", "direction": "protein-cation", "proteinAtoms": [43], "ligandAtoms": [1438, 1439, 1441, 1442, 1443, 1444] },
+    { "family": "WaterBridge", "protein": "GLN:A:70", "ligand": "9LI:A:201", "direction": "protein-donor", "proteinAtoms": [561], "ligandAtoms": [1440], "water": 1575 }
+  ]
+}
