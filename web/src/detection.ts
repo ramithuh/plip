@@ -15,6 +15,7 @@ import type {
   PreparedSite,
   ResidueRef,
   WaterMolecule,
+  Vec3,
 } from "./types.js";
 
 function belongsTo(atom: AtomRef, entity: "protein" | "ligand"): boolean {
@@ -469,7 +470,11 @@ export function detectMetalComplexes(
       .map((target) => ({ target, separation: distance(metal.atom.position, target.atom.position) }))
       .filter(({ separation }) => separation < thresholds.metalDistanceMax);
     if (contacts.length === 0 || contacts.every(({ target }) => target.location === "water")) continue;
+    const fitted = fitMetalCoordination(
+      contacts.map(({ target }) => ({ atomIndex: target.atom.index, vector: vector(metal.atom.position, target.atom.position) })),
+    );
     for (const { target, separation } of contacts) {
+      if (fitted.excludedAtomIndices.has(target.atom.index)) continue;
       if (target.location === "water") continue;
       const targetIsProtein = belongsTo(target.atom, "protein");
       const metalIsProtein = belongsTo(metal.atom, "protein");
@@ -483,12 +488,160 @@ export function detectMetalComplexes(
         ligandAtoms: [ligandAtom],
         distance: separation,
         subtype: target.type,
-        geometry: { observedCoordination: contacts.length },
+        geometry: {
+          coordination: fitted.coordination,
+          observedCoordination: contacts.length,
+          rms: fitted.rms,
+          shape: fitted.shape,
+        },
         metal: metal.atom,
       });
     }
   }
   return events;
+}
+
+interface MetalVector {
+  readonly atomIndex: number;
+  readonly vector: Vec3;
+}
+
+interface MetalFit {
+  readonly coordination: number | string;
+  readonly excludedAtomIndices: ReadonlySet<number>;
+  readonly rms: number;
+  readonly shape: string;
+}
+
+interface MetalGeometryCandidate {
+  readonly shape: string;
+  readonly rms: number;
+  readonly coordination: number;
+  readonly excludedAtomIndices: ReadonlySet<number>;
+  readonly targetDifference: number;
+}
+
+const METAL_GEOMETRIES = new Map<number, readonly string[]>([
+  [2, ["linear"]],
+  [3, ["trigonal.planar", "trigonal.pyramidal"]],
+  [4, ["tetrahedral", "square.planar"]],
+  [5, ["trigonal.bipyramidal", "square.pyramidal"]],
+  [6, ["octahedral"]],
+]);
+
+const METAL_IDEAL_ANGLES = new Map<string, readonly (readonly number[])[]>([
+  ["linear", [[180], [180]]],
+  ["trigonal.planar", Array.from({ length: 3 }, () => [120, 120])],
+  ["trigonal.pyramidal", Array.from({ length: 3 }, () => [109.5, 109.5])],
+  ["tetrahedral", Array.from({ length: 4 }, () => [109.5, 109.5, 109.5, 109.5])],
+  ["square.planar", Array.from({ length: 4 }, () => [90, 90, 90, 90])],
+  ["trigonal.bipyramidal", [
+    ...Array.from({ length: 3 }, () => [120, 120, 90, 90]),
+    ...Array.from({ length: 2 }, () => [90, 90, 90, 180]),
+  ]],
+  ["square.pyramidal", [
+    ...Array.from({ length: 4 }, () => [90, 90, 90, 180]),
+    [90, 90, 90, 90],
+  ]],
+  ["octahedral", Array.from({ length: 6 }, () => [90, 90, 90, 90, 180])],
+]);
+
+/**
+ * Port of PLIP's greedy coordination-geometry fit.
+ *
+ * All nearby targets participate in fitting, including ligand-internal and
+ * water targets. The chosen geometry can therefore remove a superfluous
+ * protein target before cross-interface events are emitted.
+ */
+export function fitMetalCoordination(vectors: readonly MetalVector[]): MetalFit {
+  const vectorsByAtom = new Map<number, Vec3[]>();
+  for (const item of vectors) {
+    const existing = vectorsByAtom.get(item.atomIndex);
+    if (existing === undefined) vectorsByAtom.set(item.atomIndex, [item.vector]);
+    else existing.push(item.vector);
+  }
+  const targetIndices = [...vectorsByAtom.keys()];
+  if (vectors.length === 1) {
+    return { coordination: 1, excludedAtomIndices: new Set(), rms: 0, shape: "NA" };
+  }
+
+  const anglesByTarget = new Map<number, number[]>();
+  for (const targetIndex of targetIndices) {
+    const current = vectorsByAtom.get(targetIndex)!;
+    const others = targetIndices
+      .filter((candidate) => candidate !== targetIndex)
+      .flatMap((candidate) => vectorsByAtom.get(candidate)!);
+    anglesByTarget.set(targetIndex, current.flatMap((left) => others.map((right) => angle(left, right))));
+  }
+
+  const candidates: MetalGeometryCandidate[] = [];
+  for (const coordination of [...METAL_GEOMETRIES.keys()].sort((left, right) => right - left)) {
+    for (const shape of METAL_GEOMETRIES.get(coordination)!) {
+      const usedTargets = new Set<number>();
+      const scores: number[] = [];
+      for (const signature of METAL_IDEAL_ANGLES.get(shape)!) {
+        let bestTarget: number | undefined;
+        let bestTargetScore = 999;
+        for (const [targetIndex, observedAngles] of anglesByTarget) {
+          if (usedTargets.has(targetIndex)) continue;
+          const usedAngles = new Set<number>();
+          const angleDifferences: number[] = [];
+          for (const idealAngle of signature) {
+            let bestAngleIndex: number | undefined;
+            let bestDifference = 999;
+            for (const [angleIndex, observedAngle] of observedAngles.entries()) {
+              if (usedAngles.has(angleIndex)) continue;
+              const difference = Math.abs(idealAngle - observedAngle);
+              if (difference < bestDifference) {
+                bestDifference = difference;
+                bestAngleIndex = angleIndex;
+              }
+            }
+            if (bestAngleIndex !== undefined) {
+              usedAngles.add(bestAngleIndex);
+              angleDifferences.push(bestDifference);
+            }
+          }
+          const score = Math.sqrt(angleDifferences.reduce((sum, value) => sum + value ** 2, 0));
+          if (score < bestTargetScore) {
+            bestTargetScore = score;
+            bestTarget = targetIndex;
+          }
+        }
+        if (bestTarget !== undefined) usedTargets.add(bestTarget);
+        scores.push(bestTargetScore);
+      }
+      const rms = scores.reduce((sum, value) => sum + value, 0) / scores.length;
+      candidates.push({
+        shape,
+        rms,
+        coordination,
+        excludedAtomIndices: new Set(targetIndices.filter((target) => !usedTargets.has(target))),
+        targetDifference: vectors.length - coordination,
+      });
+    }
+  }
+
+  candidates.sort((left, right) => Math.abs(left.targetDifference) - Math.abs(right.targetDifference));
+  for (let index = 0; index < candidates.length - 1; index += 1) {
+    const current = candidates[index]!;
+    const next = candidates[index + 1]!;
+    if (next.rms - current.rms > 0.5) return candidateToFit(current);
+    if (next.rms < 3.5) return candidateToFit(next);
+    if (index === candidates.length - 2) {
+      return { coordination: "NA", excludedAtomIndices: new Set(), rms: Number.NaN, shape: "NA" };
+    }
+  }
+  return { coordination: "NA", excludedAtomIndices: new Set(), rms: Number.NaN, shape: "NA" };
+}
+
+function candidateToFit(candidate: MetalGeometryCandidate): MetalFit {
+  return {
+    coordination: candidate.coordination,
+    excludedAtomIndices: candidate.excludedAtomIndices,
+    rms: candidate.rms,
+    shape: candidate.shape,
+  };
 }
 
 export function detectPreparedSite(

@@ -16,6 +16,12 @@ Open Babel/WASM or parity-validated replacement chemistry backend is developed.
 Weaver should only expose an interaction family as “PLIP” after its raw-file
 oracle tests pass.
 
+The prepared-feature core covers PLIP's hydrophobic contacts, hydrogen bonds,
+pi stacking, cation-pi contacts, salt bridges, halogen bonds, water bridges,
+and metal complexes. Metal targets are fitted with PLIP's original greedy
+coordination-number and geometry heuristic before cross-interface contacts are
+reported.
+
 The two-stage acceptance criteria and event-matching contract are documented in
 [`parity/README.md`](parity/README.md).
 

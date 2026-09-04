@@ -225,6 +225,15 @@ def _normalize(family: str, event: Any, protein_atom: dict[str, Any], ligand_ato
     return output
 
 
+def _metal_geometry(event: Any) -> dict[str, Any]:
+    return {
+        "coordination": event.coordination_num,
+        "observedCoordination": event.num_partners,
+        "rms": float(event.rms),
+        "shape": event.geometry,
+    }
+
+
 def _empty_entity() -> dict[str, list[Any]]:
     return {
         "hydrophobic": [], "acceptors": [], "donors": [], "rings": [], "charges": [],
@@ -343,7 +352,43 @@ def _build_cases() -> list[dict[str, Any]]:
     site["protein"]["metalTargets"] = [{"atom": target, "type": "N", "location": "protein"}]
     adapted = _adapt(site)
     result = detection.metal_complexation(adapted.metals, adapted.ligand.metal_targets, adapted.protein.metal_targets)
-    cases.append({"name": "metal-complex", "site": site, "expected": [_normalize("MetalComplex", result[0], target, metal, subtype="N")]})
+    cases.append({"name": "metal-complex", "site": site, "expected": [
+        _normalize("MetalComplex", result[0], target, metal, subtype="N", geometry=_metal_geometry(result[0]))
+    ]})
+
+    site = _site()
+    metal = _atom("ligand", [0, 0, 0], name="ZN", atomic_number=30)
+    targets = [
+        _atom("protein", list(position), name=f"T{index}", atomic_number=7, residue_name="HIS")
+        for index, position in enumerate(((1, 1, 1), (1, -1, -1), (-1, 1, -1), (-1, -1, 1)))
+    ]
+    site["metals"] = [{"atom": metal, "element": "ZN"}]
+    site["protein"]["metalTargets"] = [
+        {"atom": target, "type": "N", "location": "protein"} for target in targets
+    ]
+    adapted = _adapt(site)
+    result = detection.metal_complexation(adapted.metals, adapted.ligand.metal_targets, adapted.protein.metal_targets)
+    cases.append({"name": "metal-tetrahedral-geometry", "site": site, "expected": [
+        _normalize("MetalComplex", event, target, metal, subtype="N", geometry=_metal_geometry(event))
+        for event, target in zip(result, targets)
+    ]})
+
+    site = _site()
+    metal = _atom("ligand", [0, 0, 0], name="ZN", atomic_number=30)
+    targets = [
+        _atom("protein", list(position), name=f"S{index}", atomic_number=8, residue_name="ASP")
+        for index, position in enumerate(((2, 0, 0), (-2, 0, 0), (0, 2, 0), (0, -2, 0)))
+    ]
+    site["metals"] = [{"atom": metal, "element": "ZN"}]
+    site["protein"]["metalTargets"] = [
+        {"atom": target, "type": "O", "location": "protein"} for target in targets
+    ]
+    adapted = _adapt(site)
+    result = detection.metal_complexation(adapted.metals, adapted.ligand.metal_targets, adapted.protein.metal_targets)
+    cases.append({"name": "metal-square-planar-input", "site": site, "expected": [
+        _normalize("MetalComplex", event, target, metal, subtype="O", geometry=_metal_geometry(event))
+        for event, target in zip(result, targets)
+    ]})
 
     return cases
 

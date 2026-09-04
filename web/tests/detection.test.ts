@@ -170,6 +170,55 @@ describe("prepared-feature interaction detectors", () => {
     expect(events[0]!.proteinAtoms[0]!.index).toBe(proteinTarget.index);
     expect(events[0]!.geometry?.observedCoordination).toBe(3);
   });
+
+  it("reproduces PLIP's greedy metal-geometry choice", () => {
+    const metal = atom("ligand", [0, 0, 0], { name: "ZN", atomicNumber: 30 });
+    const tetrahedralPoints = [
+      [1, 1, 1],
+      [1, -1, -1],
+      [-1, 1, -1],
+      [-1, -1, 1],
+    ] as const;
+    const tetrahedral = detectMetalComplexes(
+      [{ atom: metal, element: "ZN" }],
+      tetrahedralPoints.map((position, index) => ({
+        atom: atom("protein", position, {
+          name: `T${index}`,
+          residue: residue("protein", { number: 20 + index }),
+        }),
+        type: "N",
+        location: "protein" as const,
+      })),
+    );
+    expect(tetrahedral).toHaveLength(4);
+    expect(tetrahedral[0]!.geometry).toMatchObject({
+      coordination: 4,
+      observedCoordination: 4,
+      shape: "tetrahedral",
+    });
+    expect(tetrahedral[0]!.geometry?.rms).toBeLessThan(0.1);
+
+    const squarePlanar = detectMetalComplexes(
+      [{ atom: metal, element: "ZN" }],
+      [[2, 0, 0], [-2, 0, 0], [0, 2, 0], [0, -2, 0]].map((position, index) => ({
+        atom: atom("protein", position as [number, number, number], {
+          name: `S${index}`,
+          residue: residue("protein", { number: 30 + index }),
+        }),
+        type: "O",
+        location: "protein" as const,
+      })),
+    );
+    expect(squarePlanar).toHaveLength(4);
+    expect(squarePlanar[0]!.geometry).toMatchObject({
+      coordination: 4,
+      observedCoordination: 4,
+      // PLIP 3.0.1 itself selects tetrahedral for this ideal square-planar
+      // input because its decision heuristic compares adjacent candidates.
+      shape: "tetrahedral",
+    });
+    expect(squarePlanar[0]!.geometry?.rms).toBeCloseTo(75.70171728567325, 6);
+  });
 });
 
 describe("PLIP reporting refinements", () => {

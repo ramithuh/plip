@@ -9,6 +9,7 @@ interface ExpectedEvent {
   readonly distance: number;
   readonly direction?: InteractionEvent["direction"];
   readonly subtype?: string;
+  readonly geometry?: Readonly<Record<string, number | string>>;
 }
 
 function normalize(event: InteractionEvent): ExpectedEvent {
@@ -19,6 +20,7 @@ function normalize(event: InteractionEvent): ExpectedEvent {
     distance: event.distance,
     ...(event.direction === undefined ? {} : { direction: event.direction }),
     ...(event.subtype === undefined ? {} : { subtype: event.subtype }),
+    ...(event.geometry === undefined ? {} : { geometry: event.geometry }),
   };
 }
 
@@ -39,8 +41,18 @@ describe("Python PLIP prepared-feature oracle", () => {
           ligandResidue: expected.ligandResidue,
           ...(expected.direction === undefined ? {} : { direction: expected.direction }),
           ...(expected.subtype === undefined ? {} : { subtype: expected.subtype }),
+          ...(expected.geometry === undefined ? {} : {
+            geometry: {
+              coordination: expected.geometry.coordination,
+              observedCoordination: expected.geometry.observedCoordination,
+              shape: expected.geometry.shape,
+            },
+          }),
         });
         expect(actual[index]!.distance).toBeCloseTo(expected.distance, 6);
+        if (expected.geometry?.rms !== undefined) {
+          expect(actual[index]!.geometry?.rms).toBeCloseTo(expected.geometry.rms as number, 6);
+        }
       }
     });
   }

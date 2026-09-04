@@ -751,6 +751,12 @@
         {
           "distance": 2.2,
           "family": "MetalComplex",
+          "geometry": {
+            "coordination": 1,
+            "observedCoordination": 1,
+            "rms": 0.0,
+            "shape": "NA"
+          },
           "ligandResidue": {
             "chain": "L",
             "name": "LIG",
@@ -826,6 +832,444 @@
               },
               "location": "protein",
               "type": "N"
+            }
+          ],
+          "rings": []
+        },
+        "waters": []
+      }
+    },
+    {
+      "expected": [
+        {
+          "distance": 1.7320508075688772,
+          "family": "MetalComplex",
+          "geometry": {
+            "coordination": 4,
+            "observedCoordination": 4,
+            "rms": 0.04984732327171727,
+            "shape": "tetrahedral"
+          },
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "HIS",
+            "number": 10
+          },
+          "subtype": "N"
+        },
+        {
+          "distance": 1.7320508075688772,
+          "family": "MetalComplex",
+          "geometry": {
+            "coordination": 4,
+            "observedCoordination": 4,
+            "rms": 0.04984732327171727,
+            "shape": "tetrahedral"
+          },
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "HIS",
+            "number": 10
+          },
+          "subtype": "N"
+        },
+        {
+          "distance": 1.7320508075688772,
+          "family": "MetalComplex",
+          "geometry": {
+            "coordination": 4,
+            "observedCoordination": 4,
+            "rms": 0.04984732327171727,
+            "shape": "tetrahedral"
+          },
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "HIS",
+            "number": 10
+          },
+          "subtype": "N"
+        },
+        {
+          "distance": 1.7320508075688772,
+          "family": "MetalComplex",
+          "geometry": {
+            "coordination": 4,
+            "observedCoordination": 4,
+            "rms": 0.04984732327171727,
+            "shape": "tetrahedral"
+          },
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "HIS",
+            "number": 10
+          },
+          "subtype": "N"
+        }
+      ],
+      "name": "metal-tetrahedral-geometry",
+      "site": {
+        "ligand": {
+          "acceptors": [],
+          "charges": [],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [],
+          "rings": []
+        },
+        "metals": [
+          {
+            "atom": {
+              "atomicNumber": 30,
+              "entity": "ligand",
+              "index": 22,
+              "name": "ZN",
+              "parentIndex": 22,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "residue": {
+                "chain": "L",
+                "name": "LIG",
+                "number": 1
+              }
+            },
+            "element": "ZN"
+          }
+        ],
+        "protein": {
+          "acceptors": [],
+          "charges": [],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [
+            {
+              "atom": {
+                "atomicNumber": 7,
+                "entity": "protein",
+                "index": 23,
+                "name": "T0",
+                "parentIndex": 23,
+                "position": [
+                  1,
+                  1,
+                  1
+                ],
+                "residue": {
+                  "chain": "A",
+                  "name": "HIS",
+                  "number": 10
+                }
+              },
+              "location": "protein",
+              "type": "N"
+            },
+            {
+              "atom": {
+                "atomicNumber": 7,
+                "entity": "protein",
+                "index": 24,
+                "name": "T1",
+                "parentIndex": 24,
+                "position": [
+                  1,
+                  -1,
+                  -1
+                ],
+                "residue": {
+                  "chain": "A",
+                  "name": "HIS",
+                  "number": 10
+                }
+              },
+              "location": "protein",
+              "type": "N"
+            },
+            {
+              "atom": {
+                "atomicNumber": 7,
+                "entity": "protein",
+                "index": 25,
+                "name": "T2",
+                "parentIndex": 25,
+                "position": [
+                  -1,
+                  1,
+                  -1
+                ],
+                "residue": {
+                  "chain": "A",
+                  "name": "HIS",
+                  "number": 10
+                }
+              },
+              "location": "protein",
+              "type": "N"
+            },
+            {
+              "atom": {
+                "atomicNumber": 7,
+                "entity": "protein",
+                "index": 26,
+                "name": "T3",
+                "parentIndex": 26,
+                "position": [
+                  -1,
+                  -1,
+                  1
+                ],
+                "residue": {
+                  "chain": "A",
+                  "name": "HIS",
+                  "number": 10
+                }
+              },
+              "location": "protein",
+              "type": "N"
+            }
+          ],
+          "rings": []
+        },
+        "waters": []
+      }
+    },
+    {
+      "expected": [
+        {
+          "distance": 2.0,
+          "family": "MetalComplex",
+          "geometry": {
+            "coordination": 4,
+            "observedCoordination": 4,
+            "rms": 75.70171728567325,
+            "shape": "tetrahedral"
+          },
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "ASP",
+            "number": 10
+          },
+          "subtype": "O"
+        },
+        {
+          "distance": 2.0,
+          "family": "MetalComplex",
+          "geometry": {
+            "coordination": 4,
+            "observedCoordination": 4,
+            "rms": 75.70171728567325,
+            "shape": "tetrahedral"
+          },
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "ASP",
+            "number": 10
+          },
+          "subtype": "O"
+        },
+        {
+          "distance": 2.0,
+          "family": "MetalComplex",
+          "geometry": {
+            "coordination": 4,
+            "observedCoordination": 4,
+            "rms": 75.70171728567325,
+            "shape": "tetrahedral"
+          },
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "ASP",
+            "number": 10
+          },
+          "subtype": "O"
+        },
+        {
+          "distance": 2.0,
+          "family": "MetalComplex",
+          "geometry": {
+            "coordination": 4,
+            "observedCoordination": 4,
+            "rms": 75.70171728567325,
+            "shape": "tetrahedral"
+          },
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "ASP",
+            "number": 10
+          },
+          "subtype": "O"
+        }
+      ],
+      "name": "metal-square-planar-input",
+      "site": {
+        "ligand": {
+          "acceptors": [],
+          "charges": [],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [],
+          "rings": []
+        },
+        "metals": [
+          {
+            "atom": {
+              "atomicNumber": 30,
+              "entity": "ligand",
+              "index": 27,
+              "name": "ZN",
+              "parentIndex": 27,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "residue": {
+                "chain": "L",
+                "name": "LIG",
+                "number": 1
+              }
+            },
+            "element": "ZN"
+          }
+        ],
+        "protein": {
+          "acceptors": [],
+          "charges": [],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [
+            {
+              "atom": {
+                "atomicNumber": 8,
+                "entity": "protein",
+                "index": 28,
+                "name": "S0",
+                "parentIndex": 28,
+                "position": [
+                  2,
+                  0,
+                  0
+                ],
+                "residue": {
+                  "chain": "A",
+                  "name": "ASP",
+                  "number": 10
+                }
+              },
+              "location": "protein",
+              "type": "O"
+            },
+            {
+              "atom": {
+                "atomicNumber": 8,
+                "entity": "protein",
+                "index": 29,
+                "name": "S1",
+                "parentIndex": 29,
+                "position": [
+                  -2,
+                  0,
+                  0
+                ],
+                "residue": {
+                  "chain": "A",
+                  "name": "ASP",
+                  "number": 10
+                }
+              },
+              "location": "protein",
+              "type": "O"
+            },
+            {
+              "atom": {
+                "atomicNumber": 8,
+                "entity": "protein",
+                "index": 30,
+                "name": "S2",
+                "parentIndex": 30,
+                "position": [
+                  0,
+                  2,
+                  0
+                ],
+                "residue": {
+                  "chain": "A",
+                  "name": "ASP",
+                  "number": 10
+                }
+              },
+              "location": "protein",
+              "type": "O"
+            },
+            {
+              "atom": {
+                "atomicNumber": 8,
+                "entity": "protein",
+                "index": 31,
+                "name": "S3",
+                "parentIndex": 31,
+                "position": [
+                  0,
+                  -2,
+                  0
+                ],
+                "residue": {
+                  "chain": "A",
+                  "name": "ASP",
+                  "number": 10
+                }
+              },
+              "location": "protein",
+              "type": "O"
             }
           ],
           "rings": []

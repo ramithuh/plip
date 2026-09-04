@@ -6,6 +6,6 @@ export const PLIP_WEB_COMPATIBILITY = Object.freeze({
   limitations: [
     "Open Babel structure preparation and chemical perception are not yet browser-ported.",
     "Hydrogen-bond and water-bridge detection requires explicit prepared donor hydrogens.",
-    "Metal contact detection is implemented; PLIP's coordination-geometry fitting is pending.",
+    "Metal contact detection and PLIP's coordination-geometry fitting are implemented over prepared targets.",
   ],
 });

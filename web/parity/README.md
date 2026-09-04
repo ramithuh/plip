@@ -54,6 +54,12 @@ Python-only and browser-only events follow. Structures used for hydrogen-bond
 parity must be protonated once and reused with Python PLIP's `--nohydro` mode so
 Open Babel's hydrogen placement does not vary between runs.
 
+Metal parity includes the selected coordination number, geometry label, RMS
+score, and any target rejected by PLIP's geometry fit. This is important because
+PLIP's greedy selection can produce a non-intuitive label even for an idealized
+input; the browser port intentionally reproduces the reference behavior rather
+than silently replacing it with a different classifier.
+
 The raw gate should include positive and negative examples for every family,
 multi-ligand and metal-containing systems, alternate locations, waters,
 covalent ligands, nucleotides, and deliberately missing hydrogens. Until this
