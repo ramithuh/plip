@@ -49,5 +49,9 @@ target/
 *~
 .nfs*
 tests/
+!web/tests/
+!web/tests/**
+node_modules/
+coverage/
 # JetBrains IDE settings
 .idea/

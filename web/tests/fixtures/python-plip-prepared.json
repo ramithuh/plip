@@ -1,0 +1,843 @@
+{
+  "boundary": "prepared chemical features; Open Babel inference is deliberately excluded",
+  "cases": [
+    {
+      "expected": [
+        {
+          "distance": 3.0,
+          "family": "Hydrophobic",
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "ALA",
+            "number": 10
+          }
+        }
+      ],
+      "name": "hydrophobic",
+      "site": {
+        "ligand": {
+          "acceptors": [],
+          "charges": [],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [
+            {
+              "atom": {
+                "atomicNumber": 6,
+                "entity": "ligand",
+                "index": 2,
+                "name": "C",
+                "parentIndex": 2,
+                "position": [
+                  3,
+                  0,
+                  0
+                ],
+                "residue": {
+                  "chain": "L",
+                  "name": "LIG",
+                  "number": 1
+                }
+              },
+              "neighbors": []
+            }
+          ],
+          "metalTargets": [],
+          "rings": []
+        },
+        "metals": [],
+        "protein": {
+          "acceptors": [],
+          "charges": [],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [
+            {
+              "atom": {
+                "atomicNumber": 6,
+                "entity": "protein",
+                "index": 1,
+                "name": "C",
+                "parentIndex": 1,
+                "position": [
+                  0,
+                  0,
+                  0
+                ],
+                "residue": {
+                  "chain": "A",
+                  "name": "ALA",
+                  "number": 10
+                }
+              },
+              "neighbors": []
+            }
+          ],
+          "metalTargets": [],
+          "rings": []
+        },
+        "waters": []
+      }
+    },
+    {
+      "expected": [
+        {
+          "direction": "ligand-donor",
+          "distance": 2.8,
+          "family": "HydrogenBond",
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "ALA",
+            "number": 10
+          }
+        }
+      ],
+      "name": "hydrogen-bond",
+      "site": {
+        "ligand": {
+          "acceptors": [],
+          "charges": [],
+          "donors": [
+            {
+              "atom": {
+                "atomicNumber": 7,
+                "entity": "ligand",
+                "index": 4,
+                "name": "N",
+                "parentIndex": 4,
+                "position": [
+                  0,
+                  0,
+                  0
+                ],
+                "residue": {
+                  "chain": "L",
+                  "name": "LIG",
+                  "number": 1
+                }
+              },
+              "hydrogen": {
+                "atomicNumber": 1,
+                "entity": "ligand",
+                "index": 5,
+                "name": "H",
+                "parentIndex": 5,
+                "position": [
+                  1,
+                  0,
+                  0
+                ],
+                "residue": {
+                  "chain": "L",
+                  "name": "LIG",
+                  "number": 1
+                }
+              },
+              "type": "N"
+            }
+          ],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [],
+          "rings": []
+        },
+        "metals": [],
+        "protein": {
+          "acceptors": [
+            {
+              "atom": {
+                "atomicNumber": 8,
+                "entity": "protein",
+                "index": 3,
+                "name": "O",
+                "parentIndex": 3,
+                "position": [
+                  2.8,
+                  0,
+                  0
+                ],
+                "residue": {
+                  "chain": "A",
+                  "name": "ALA",
+                  "number": 10
+                }
+              },
+              "type": "O"
+            }
+          ],
+          "charges": [],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [],
+          "rings": []
+        },
+        "waters": []
+      }
+    },
+    {
+      "expected": [
+        {
+          "distance": 4.0,
+          "family": "PiStacking",
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "PHE",
+            "number": 10
+          },
+          "subtype": "parallel"
+        }
+      ],
+      "name": "pi-stacking",
+      "site": {
+        "ligand": {
+          "acceptors": [],
+          "charges": [],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [],
+          "rings": [
+            {
+              "atoms": [
+                {
+                  "atomicNumber": 6,
+                  "entity": "ligand",
+                  "index": 7,
+                  "name": "C",
+                  "parentIndex": 7,
+                  "position": [
+                    0,
+                    0,
+                    4
+                  ],
+                  "residue": {
+                    "chain": "L",
+                    "name": "LIG",
+                    "number": 1
+                  }
+                }
+              ],
+              "center": [
+                0,
+                0,
+                4
+              ],
+              "id": "l",
+              "normal": [
+                0.173648,
+                0,
+                0.984808
+              ]
+            }
+          ]
+        },
+        "metals": [],
+        "protein": {
+          "acceptors": [],
+          "charges": [],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [],
+          "rings": [
+            {
+              "atoms": [
+                {
+                  "atomicNumber": 6,
+                  "entity": "protein",
+                  "index": 6,
+                  "name": "C",
+                  "parentIndex": 6,
+                  "position": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "residue": {
+                    "chain": "A",
+                    "name": "PHE",
+                    "number": 10
+                  }
+                }
+              ],
+              "center": [
+                0,
+                0,
+                0
+              ],
+              "id": "p",
+              "normal": [
+                0,
+                0,
+                1
+              ]
+            }
+          ]
+        },
+        "waters": []
+      }
+    },
+    {
+      "expected": [
+        {
+          "direction": "ligand-cation",
+          "distance": 4.0,
+          "family": "CationPi",
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "TRP",
+            "number": 10
+          }
+        }
+      ],
+      "name": "cation-pi",
+      "site": {
+        "ligand": {
+          "acceptors": [],
+          "charges": [
+            {
+              "atoms": [
+                {
+                  "atomicNumber": 7,
+                  "entity": "ligand",
+                  "index": 9,
+                  "name": "N",
+                  "parentIndex": 9,
+                  "position": [
+                    0,
+                    0,
+                    4
+                  ],
+                  "residue": {
+                    "chain": "L",
+                    "name": "LIG",
+                    "number": 1
+                  }
+                }
+              ],
+              "center": [
+                0,
+                0,
+                4
+              ],
+              "charge": "positive"
+            }
+          ],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [],
+          "rings": []
+        },
+        "metals": [],
+        "protein": {
+          "acceptors": [],
+          "charges": [],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [],
+          "rings": [
+            {
+              "atoms": [
+                {
+                  "atomicNumber": 6,
+                  "entity": "protein",
+                  "index": 8,
+                  "name": "C",
+                  "parentIndex": 8,
+                  "position": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "residue": {
+                    "chain": "A",
+                    "name": "TRP",
+                    "number": 10
+                  }
+                }
+              ],
+              "center": [
+                0,
+                0,
+                0
+              ],
+              "id": "p",
+              "normal": [
+                0,
+                0,
+                1
+              ]
+            }
+          ]
+        },
+        "waters": []
+      }
+    },
+    {
+      "expected": [
+        {
+          "direction": "protein-cation",
+          "distance": 3.0,
+          "family": "SaltBridge",
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "LYS",
+            "number": 10
+          }
+        }
+      ],
+      "name": "salt-bridge",
+      "site": {
+        "ligand": {
+          "acceptors": [],
+          "charges": [
+            {
+              "atoms": [
+                {
+                  "atomicNumber": 8,
+                  "entity": "ligand",
+                  "index": 11,
+                  "name": "O",
+                  "parentIndex": 11,
+                  "position": [
+                    3,
+                    0,
+                    0
+                  ],
+                  "residue": {
+                    "chain": "L",
+                    "name": "LIG",
+                    "number": 1
+                  }
+                }
+              ],
+              "center": [
+                3,
+                0,
+                0
+              ],
+              "charge": "negative"
+            }
+          ],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [],
+          "rings": []
+        },
+        "metals": [],
+        "protein": {
+          "acceptors": [],
+          "charges": [
+            {
+              "atoms": [
+                {
+                  "atomicNumber": 7,
+                  "entity": "protein",
+                  "index": 10,
+                  "name": "NZ",
+                  "parentIndex": 10,
+                  "position": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "residue": {
+                    "chain": "A",
+                    "name": "LYS",
+                    "number": 10
+                  }
+                }
+              ],
+              "center": [
+                0,
+                0,
+                0
+              ],
+              "charge": "positive"
+            }
+          ],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [],
+          "rings": []
+        },
+        "waters": []
+      }
+    },
+    {
+      "expected": [
+        {
+          "distance": 3.0,
+          "family": "HalogenBond",
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "ALA",
+            "number": 10
+          }
+        }
+      ],
+      "name": "halogen-bond",
+      "site": {
+        "ligand": {
+          "acceptors": [],
+          "charges": [],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [
+            {
+              "carbon": {
+                "atomicNumber": 6,
+                "entity": "ligand",
+                "index": 15,
+                "name": "C",
+                "parentIndex": 15,
+                "position": [
+                  3.965925826289068,
+                  0.25881904510252074,
+                  0
+                ],
+                "residue": {
+                  "chain": "L",
+                  "name": "LIG",
+                  "number": 1
+                }
+              },
+              "halogen": {
+                "atomicNumber": 17,
+                "entity": "ligand",
+                "index": 14,
+                "name": "CL",
+                "parentIndex": 14,
+                "position": [
+                  3,
+                  0,
+                  0
+                ],
+                "residue": {
+                  "chain": "L",
+                  "name": "LIG",
+                  "number": 1
+                }
+              },
+              "type": "halocarbon"
+            }
+          ],
+          "hydrophobic": [],
+          "metalTargets": [],
+          "rings": []
+        },
+        "metals": [],
+        "protein": {
+          "acceptors": [],
+          "charges": [],
+          "donors": [],
+          "halogenAcceptors": [
+            {
+              "neighbor": {
+                "atomicNumber": 6,
+                "entity": "protein",
+                "index": 13,
+                "name": "C",
+                "parentIndex": 13,
+                "position": [
+                  -0.5,
+                  0.8660254037844386,
+                  0
+                ],
+                "residue": {
+                  "chain": "A",
+                  "name": "ALA",
+                  "number": 10
+                }
+              },
+              "oxygen": {
+                "atomicNumber": 8,
+                "entity": "protein",
+                "index": 12,
+                "name": "O",
+                "parentIndex": 12,
+                "position": [
+                  0,
+                  0,
+                  0
+                ],
+                "residue": {
+                  "chain": "A",
+                  "name": "ALA",
+                  "number": 10
+                }
+              },
+              "type": "O"
+            }
+          ],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [],
+          "rings": []
+        },
+        "waters": []
+      }
+    },
+    {
+      "expected": [
+        {
+          "direction": "protein-donor",
+          "distance": 3.0,
+          "family": "WaterBridge",
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "ALA",
+            "number": 10
+          }
+        }
+      ],
+      "name": "water-bridge",
+      "site": {
+        "ligand": {
+          "acceptors": [
+            {
+              "atom": {
+                "atomicNumber": 8,
+                "entity": "ligand",
+                "index": 17,
+                "name": "O",
+                "parentIndex": 17,
+                "position": [
+                  -1.0260604299770062,
+                  2.8190778623577253,
+                  0
+                ],
+                "residue": {
+                  "chain": "L",
+                  "name": "LIG",
+                  "number": 1
+                }
+              },
+              "type": "O"
+            }
+          ],
+          "charges": [],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [],
+          "rings": []
+        },
+        "metals": [],
+        "protein": {
+          "acceptors": [],
+          "charges": [],
+          "donors": [
+            {
+              "atom": {
+                "atomicNumber": 7,
+                "entity": "protein",
+                "index": 19,
+                "name": "N",
+                "parentIndex": 19,
+                "position": [
+                  3,
+                  0,
+                  0
+                ],
+                "residue": {
+                  "chain": "A",
+                  "name": "ALA",
+                  "number": 10
+                }
+              },
+              "hydrogen": {
+                "atomicNumber": 1,
+                "entity": "protein",
+                "index": 18,
+                "name": "H",
+                "parentIndex": 18,
+                "position": [
+                  1,
+                  0,
+                  0
+                ],
+                "residue": {
+                  "chain": "A",
+                  "name": "ALA",
+                  "number": 10
+                }
+              },
+              "type": "N"
+            }
+          ],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [],
+          "rings": []
+        },
+        "waters": [
+          {
+            "oxygen": {
+              "atomicNumber": 8,
+              "entity": "water",
+              "index": 16,
+              "name": "O",
+              "parentIndex": 16,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "residue": {
+                "chain": "W",
+                "name": "HOH",
+                "number": 100
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "expected": [
+        {
+          "distance": 2.2,
+          "family": "MetalComplex",
+          "ligandResidue": {
+            "chain": "L",
+            "name": "LIG",
+            "number": 1
+          },
+          "proteinResidue": {
+            "chain": "A",
+            "name": "HIS",
+            "number": 10
+          },
+          "subtype": "N"
+        }
+      ],
+      "name": "metal-complex",
+      "site": {
+        "ligand": {
+          "acceptors": [],
+          "charges": [],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [],
+          "rings": []
+        },
+        "metals": [
+          {
+            "atom": {
+              "atomicNumber": 26,
+              "entity": "ligand",
+              "index": 20,
+              "name": "FE",
+              "parentIndex": 20,
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "residue": {
+                "chain": "L",
+                "name": "LIG",
+                "number": 1
+              }
+            },
+            "element": "FE"
+          }
+        ],
+        "protein": {
+          "acceptors": [],
+          "charges": [],
+          "donors": [],
+          "halogenAcceptors": [],
+          "halogenDonors": [],
+          "hydrophobic": [],
+          "metalTargets": [
+            {
+              "atom": {
+                "atomicNumber": 7,
+                "entity": "protein",
+                "index": 21,
+                "name": "NE2",
+                "parentIndex": 21,
+                "position": [
+                  2.2,
+                  0,
+                  0
+                ],
+                "residue": {
+                  "chain": "A",
+                  "name": "HIS",
+                  "number": 10
+                }
+              },
+              "location": "protein",
+              "type": "N"
+            }
+          ],
+          "rings": []
+        },
+        "waters": []
+      }
+    }
+  ],
+  "oracle": {
+    "commit": "2f4911d",
+    "detectorSha256": "4479b9a86eac810c3cb657a0cbc6b5c055c67018fc9c3591d938f06ced142365",
+    "implementation": "Python PLIP",
+    "version": "3.0.1"
+  }
+}
