@@ -11,6 +11,26 @@ experimental `prepareRdkitSite()` adapter now derives those features from
 sanitized RDKit.js components while retaining the caller's atom identities and
 3D coordinates.
 
+`prepareOpenBabelSite(molecule, identities)` now also accepts the JSON graph and
+perception flags from original Open Babel C++ compiled to WASM. It uses native
+donor/acceptor flags, hybridization, implicit-H counts, bonds and rings, while
+sharing the Web port's existing functional-group and interaction feature rules.
+It does not call RDKit to retype the Open Babel output. Entries in `identities`
+may be undefined for contextual atoms outside the selected site.
+
+Weaver now uses this backend by default, prepares the complete parsed structure
+in a worker, and offers polar-H addition or input-H-only modes independently of
+ProLIF. The WASM bridge/build sources and runtime assets live in Weaver's
+`vendor/openbabel-wasm` and `public/openbabel`. Atom indices returned by the
+bridge are 1-based OB indices; the caller must validate and map them back to
+original structure identities (including generated H) before using this API.
+
+This is still fixture-bounded feature adaptation, not a full port of Python
+PLIP's ligand selection and preprocessing. Weaver's fixed-protonated 4DST test
+matches all six native PLIP 3.0.1 atom-level events. Open Babel can generate
+variable H orientations for underdetermined geometry even in native runs;
+independently protonated results need a separate sensitivity comparison.
+
 The package deliberately does not own PDB/mmCIF parsing or receptor/ligand
 selection. A caller supplies one RDKit molecule and ordered `AtomRef` array per
 component. Their atom counts, atomic numbers, and order are validated before

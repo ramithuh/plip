@@ -4,4 +4,5 @@ export * from "./detection.js";
 export * from "./fingerprint.js";
 export * from "./geometry.js";
 export * from "./rdkit.js";
+export * from "./openbabel.js";
 export * from "./types.js";

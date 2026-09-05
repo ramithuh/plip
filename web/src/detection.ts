@@ -57,12 +57,16 @@ export function detectHydrophobic(
   protein: readonly HydrophobicAtom[],
   ligand: readonly HydrophobicAtom[],
   thresholds: PlipThresholds = PLIP_DEFAULTS,
+  stacking: readonly InteractionEvent[] = [],
 ): InteractionEvent[] {
   const raw: Array<InteractionEvent & { protein: HydrophobicAtom; ligand: HydrophobicAtom }> = [];
   for (const proteinFeature of protein) {
     for (const ligandFeature of ligand) {
       const separation = distance(proteinFeature.atom.position, ligandFeature.atom.position);
       if (!strictRange(separation, thresholds.minimumDistance, thresholds.hydrophobicDistanceMax)) continue;
+      // Native excludes stacked-ring contacts before either reduction pass.
+      if (stacking.some(stack => stack.proteinAtoms.some(a => a.index === proteinFeature.atom.index)
+        && stack.ligandAtoms.some(a => a.index === ligandFeature.atom.index))) continue;
       raw.push({
         family: "Hydrophobic",
         ...residues(proteinFeature.atom, ligandFeature.atom),
@@ -78,7 +82,7 @@ export function detectHydrophobic(
   // PLIP first keeps the closest contact for each ligand atom/protein residue pair.
   const byLigandAndResidue = new Map<string, typeof raw[number]>();
   for (const event of raw) {
-    const key = `${event.ligand.atom.index}|${event.protein.atom.residue.chain}|${event.protein.atom.residue.number}`;
+    const key = `${event.ligand.atom.index}|${event.protein.atom.residue.number}`;
     const previous = byLigandAndResidue.get(key);
     if (previous === undefined || event.distance < previous.distance) byLigandAndResidue.set(key, event);
   }
@@ -96,6 +100,9 @@ export function detectHydrophobic(
     const visited = new Set<number>();
     for (const event of events) {
       if (visited.has(event.ligand.atom.index)) continue;
+      // PLIP clusters only edges among contacting ligand atoms. In a
+      // multi-contact group, isolated vertices are not retained by native.
+      if (!event.ligand.neighbors.some(n => eventByLigand.has(n))) continue;
       const stack = [event.ligand.atom.index];
       const component: typeof events = [];
       while (stack.length > 0) {
@@ -657,10 +664,7 @@ export function detectPreparedSite(
     site.ligand.donors,
     thresholds,
   ), saltBridges);
-  const hydrophobic = detectHydrophobic(site.protein.hydrophobic, site.ligand.hydrophobic, thresholds)
-    .filter((event) => !stacking.some((stack) =>
-      stack.proteinAtoms.some((atom) => atom.index === event.proteinAtoms[0]?.index)
-      && stack.ligandAtoms.some((atom) => atom.index === event.ligandAtoms[0]?.index)));
+  const hydrophobic = detectHydrophobic(site.protein.hydrophobic, site.ligand.hydrophobic, thresholds, stacking);
   const cationPi = refineCationPiAgainstStacking(detectCationPi(
     site.protein.rings,
     site.protein.charges,

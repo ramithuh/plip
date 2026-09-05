@@ -36,7 +36,7 @@ describe("prepared-feature interaction detectors", () => {
     );
     expect(events.map((event) => event.ligandAtoms[0]!.index).sort()).toEqual([
       ligandNear.index,
-      ligandDisconnected.index,
+      // Native PLIP's edge-only clustering omits the disconnected contact.
     ].sort());
     expect(detectHydrophobic(
       [{ atom: protein, neighbors: [] }],

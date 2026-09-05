@@ -62,7 +62,7 @@ interface RdkitJson {
   }[];
 }
 
-interface ComponentTopology {
+export interface ComponentTopology {
   readonly atoms: readonly AtomRef[];
   readonly atomicNumbers: readonly number[];
   readonly implicitHydrogens: readonly number[];
@@ -304,7 +304,7 @@ function ligandCharges(data: ComponentTopology): ChargeGroup[] {
   const output: ChargeGroup[] = [];
   const seen = new Set<string>();
   const add = (indices: readonly number[], charge: ChargeGroup["charge"], functionalGroup: string, centerIndices = indices): void => {
-    const sorted = [...new Set(indices)].sort((left, right) => left - right);
+    const sorted = [...indices].sort((left, right) => left - right);
     const key = `${charge}:${functionalGroup}:${sorted.join(",")}`;
     if (seen.has(key) || sorted.length === 0) return;
     seen.add(key);
@@ -326,21 +326,24 @@ function ligandCharges(data: ComponentTopology): ChargeGroup[] {
     const atomicNumber = data.atomicNumbers[index]!;
     const neighbors = data.neighbors[index]!;
     const neighborElements = neighbors.map((neighbor) => data.atomicNumbers[neighbor]!);
-    if (atomicNumber === 7 && neighborElements.every((number) => number !== 1) && neighbors.length === 4) {
+    // Native PLIP compares the string '1' with integer atomic numbers here;
+    // its effective behavior includes explicit-H neighbors in this count.
+    if (atomicNumber === 7 && neighbors.length === 4) {
       add([index], "positive", "quartamine");
-    } else if (atomicNumber === 7 && data.sp3Atoms.has(index) && neighbors.length + data.implicitHydrogens[index]! >= 3) {
+    } else if (atomicNumber === 7 && data.sp3Atoms.has(index) && neighbors.length >= 3) {
       add([index], "positive", "tertamine");
     }
-    if (atomicNumber === 16 && neighborElements.every((number) => number !== 1) && neighbors.length === 3) {
+    if (atomicNumber === 16 && neighbors.length === 3) {
       add([index], "positive", "sulfonium");
     }
     if (atomicNumber === 15 && neighbors.length > 0 && neighborElements.every((number) => number === 8)) {
-      add([index, ...neighbors], "negative", "phosphate", [index]);
+      // Preserve native reported atom-index multiplicity (central atom twice).
+      add([index, index, ...neighbors], "negative", "phosphate", [index]);
     }
-    if (atomicNumber === 16 && neighborElements.filter((number) => number === 8).length === 3) {
-      add([index, ...neighbors.filter((neighbor) => data.atomicNumbers[neighbor] === 8)], "negative", "sulfonicacid", [index]);
+    if (atomicNumber === 16 && neighbors.length !== 3 && neighborElements.filter((number) => number === 8).length === 3) {
+      add([index, index, ...neighbors.filter((neighbor) => data.atomicNumbers[neighbor] === 8)], "negative", "sulfonicacid", [index]);
     } else if (atomicNumber === 16 && neighborElements.filter((number) => number === 8).length === 4) {
-      add([index, ...neighbors], "negative", "sulfate", [index]);
+      add([index, index, ...neighbors], "negative", "sulfate", [index]);
     }
     if (atomicNumber === 6 && neighborElements.filter((number) => number === 8).length === 2
         && neighborElements.filter((number) => number === 6).length === 1) {
@@ -404,6 +407,15 @@ function prepareComponent(rdkit: RDKitModule, component: RdkitComponentInput, ro
   const data = topology(rdkit, component);
   const acceptorIndices = new Set(matches(rdkit, component.molecule, data.atoms.length, ACCEPTOR_SMARTS).map((match) => match[0]!));
   const donorIndices = new Set(matches(rdkit, component.molecule, data.atoms.length, DONOR_SMARTS).map((match) => match[0]!));
+  return prepareTopologyComponent(data, role, acceptorIndices, donorIndices);
+}
+
+/** Shared PLIP feature rules; chemical perception is supplied by the backend. */
+export function prepareTopologyComponent(
+  data: ComponentTopology, role: "protein" | "ligand",
+  acceptorIndices: ReadonlySet<number>, donorIndices: ReadonlySet<number>,
+  donorHydrogenIndices?: ReadonlySet<number>,
+) {
   const hydrophobic: HydrophobicAtom[] = [];
   const acceptors: HydrogenBondAcceptor[] = [];
   const donors: HydrogenBondDonor[] = [];
@@ -420,7 +432,8 @@ function prepareComponent(rdkit: RDKitModule, component: RdkitComponentInput, ro
     }
     if (acceptorIndices.has(index) && ![9, 17, 35, 53].includes(element)) acceptors.push({ atom, type: "regular" });
     if (donorIndices.has(index)) {
-      for (const neighbor of neighbors.filter((neighbor) => data.atomicNumbers[neighbor] === 1)) {
+      for (const neighbor of neighbors.filter((neighbor) => data.atomicNumbers[neighbor] === 1
+          && (donorHydrogenIndices === undefined || donorHydrogenIndices.has(neighbor)))) {
         donors.push({ atom, hydrogen: data.atoms[neighbor]!, type: "regular" });
       }
     }
@@ -460,7 +473,10 @@ function prepareComponent(rdkit: RDKitModule, component: RdkitComponentInput, ro
       acceptors,
       donors,
       rings,
-      charges: role === "protein" ? proteinCharges(data.atoms) : ligandCharges(data),
+      // Native extracts a heavy-atom ligand before classifying charge groups;
+      // donor H coordinates still come from the full complex separately.
+      charges: role === "protein" ? proteinCharges(data.atoms) : ligandCharges({ ...data,
+        neighbors: data.neighbors.map(ns => ns.filter(i => data.atomicNumbers[i] !== 1)) }),
       halogenAcceptors,
       halogenDonors,
       metalTargets: metalTargets(data, role),
